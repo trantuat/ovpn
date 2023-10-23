@@ -46,8 +46,8 @@ auth SHA512
 tls-auth ta.key 0
 topology subnet
 server 10.14.0.0 255.255.255.0
-ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server5.conf
-	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server/server5.conf
+ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server6.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server/server6.conf
 	# DNS
 	case $DNS in
 		1)
@@ -60,24 +60,24 @@ ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server5.conf
 		fi
 		# Obtain the resolvers from resolv.conf and use them for OpenVPN
 		grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read line; do
-			echo "push \"dhcp-option DNS $line\"" >> /etc/openvpn/server/server5.conf
+			echo "push \"dhcp-option DNS $line\"" >> /etc/openvpn/server/server6.conf
 		done
 		;;
 		2)
-		echo 'push "dhcp-option DNS 1.1.1.1"' >> /etc/openvpn/server/server5.conf
-		echo 'push "dhcp-option DNS 1.0.0.1"' >> /etc/openvpn/server/server5.conf
+		echo 'push "dhcp-option DNS 1.1.1.1"' >> /etc/openvpn/server/server6.conf
+		echo 'push "dhcp-option DNS 1.0.0.1"' >> /etc/openvpn/server/server6.conf
 		;;
 		3)
-		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server/server5.conf
-		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server/server5.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server/server6.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server/server6.conf
 		;;
 		4)
-		echo 'push "dhcp-option DNS 208.67.222.222"' >> /etc/openvpn/server/server5.conf
-		echo 'push "dhcp-option DNS 208.67.220.220"' >> /etc/openvpn/server/server5.conf
+		echo 'push "dhcp-option DNS 208.67.222.222"' >> /etc/openvpn/server/server6.conf
+		echo 'push "dhcp-option DNS 208.67.220.220"' >> /etc/openvpn/server/server6.conf
 		;;
 		5)
-		echo 'push "dhcp-option DNS 64.6.64.6"' >> /etc/openvpn/server/server5.conf
-		echo 'push "dhcp-option DNS 64.6.65.6"' >> /etc/openvpn/server/server5.conf
+		echo 'push "dhcp-option DNS 64.6.64.6"' >> /etc/openvpn/server/server6.conf
+		echo 'push "dhcp-option DNS 64.6.65.6"' >> /etc/openvpn/server/server6.conf
 		;;
 	esac
 	echo "keepalive 10 120
@@ -88,7 +88,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 verb 3
-crl-verify crl.pem" >> /etc/openvpn/server/server5.conf
+crl-verify crl.pem" >> /etc/openvpn/server/server6.conf
 	echo "[Unit]
 Before=network.target
 [Service]
@@ -108,4 +108,4 @@ WantedBy=multi-user.target" > /etc/systemd/system/openvpn-iptables5.service
 	systemctl enable --now openvpn-iptables5.service
 	
 	# And finally, enable and start the OpenVPN service
-	systemctl enable --now openvpn-server@server5.service
+	systemctl enable --now openvpn-server@server6.service
