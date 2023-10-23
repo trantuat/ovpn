@@ -103,9 +103,9 @@ ExecStop=/sbin/iptables -D FORWARD -s 10.14.0.0/24 -j ACCEPT
 ExecStop=/sbin/iptables -D FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 RemainAfterExit=yes
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/openvpn-iptables5.service
+WantedBy=multi-user.target" > /etc/systemd/system/openvpn-iptables6.service
 		
-	systemctl enable --now openvpn-iptables5.service
+	systemctl enable --now openvpn-iptables6.service
 	
 	# And finally, enable and start the OpenVPN service
 	systemctl enable --now openvpn-server@server6.service
